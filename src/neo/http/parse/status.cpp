@@ -20,7 +20,7 @@ neo::http::status_line neo::http::status_line::parse(neo::const_buffer cbuf) noe
     }
 
     // Parse a version start the same
-    constexpr auto ver_buf_len = std::strlen("HTTP/1.x");
+    constexpr auto ver_buf_len = std::string_view("HTTP/1.x").length();
     auto           ver_buf     = cbuf.first(ver_buf_len);
     auto           ver         = parse_version(ver_buf);
     if (ver == version::invalid) {
