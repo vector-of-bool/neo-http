@@ -2,6 +2,7 @@
 
 #include "./abnf.hpp"
 #include "./token.hpp"
+#include <neo/http/headers.hpp>
 
 #include <neo/buffer_algorithm.hpp>
 #include <neo/concepts.hpp>
@@ -58,12 +59,7 @@ bool neo::http::header_bufs::key_equivalent(neo::const_buffer buf) const noexcep
 }
 
 bool neo::http::header_bufs::key_equivalent(std::string_view other_key) const noexcept {
-    static auto& c_locale = std::use_facet<std::ctype<char>>(std::locale("C"));
-    return std::equal(key_view.cbegin(),
-                      key_view.cend(),
-                      other_key.cbegin(),
-                      other_key.cend(),
-                      [&](char a, char b) { return c_locale.tolower(a) == c_locale.tolower(b); });
+    return header_key_equivalent(key_view, other_key);
 }
 
 neo::mutable_buffer neo::http::header_bufs::write(neo::mutable_buffer out) const noexcept {

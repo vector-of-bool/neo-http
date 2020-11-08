@@ -75,9 +75,15 @@ ResponseType read_response_head(In&& in_) {
 // clang-format off
 template <buffer_output Out, buffer_input In, typename TransformerFactory>
 std::size_t read_response(Out&& out_, In&& in_, TransformerFactory&& tr_factory)
-    requires requires(std::string_view te) {
-        { tr_factory(te, ensure_buffer_source(in_)) } -> buffer_source;
-    }
+    requires (
+        invocable<TransformerFactory,
+                  std::string_view&,
+                  decltype(ensure_buffer_source(in_))&> &&
+        buffer_source<
+            std::invoke_result_t<TransformerFactory,
+                                 std::string_view&,
+                                 decltype(ensure_buffer_source(in_))&>>
+    )
 {
     // clang-format on
     auto&& in  = ensure_buffer_source(in_);

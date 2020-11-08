@@ -9,7 +9,24 @@
 
 namespace neo::http {
 
-bool header_key_equivalent(std::string_view key1, std::string_view key2) noexcept;
+constexpr bool header_key_equivalent(std::string_view key1, std::string_view key2) noexcept {
+    if (key1.size() != key2.size()) {
+        return false;
+    }
+    auto lower = [](char c) {
+        if (c >= 'A' && c <= 'Z') {
+            auto offset = c - 'A';
+            return static_cast<char>('a' + offset);
+        }
+        return c;
+    };
+    for (auto it_1 = key1.cbegin(), it_2 = key2.cbegin(); it_1 != key1.cend(); ++it_1, ++it_2) {
+        if (lower(*it_1) != lower(*it_2)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 template <typename Allocator = std::allocator<void>>
 class basic_headers {
