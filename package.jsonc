@@ -1,0 +1,10 @@
+{
+    "name": "neo-http",
+    "version": "0.1.0-dev",
+    "namespace": "neo",
+    "depends": [
+        "neo-buffer^0.4.2",
+        "neo-fun^0.5.4"
+    ],
+    "test_driver": "Catch-Main"
+}
