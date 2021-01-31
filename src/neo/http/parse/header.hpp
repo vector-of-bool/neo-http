@@ -144,6 +144,7 @@ struct header_iterator : iterator_facade<header_iterator> {
     constexpr bool at_end() const noexcept { return !current.valid(); }
 
     struct sentinel_type {};
+    constexpr bool operator==(sentinel_type) const noexcept { return at_end(); }
 };
 
 struct header_lines_buf {
